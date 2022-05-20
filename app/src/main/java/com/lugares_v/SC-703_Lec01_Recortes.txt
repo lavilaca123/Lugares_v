@@ -1,0 +1,136 @@
+
+
+
+Recorte 000: grable Project  (copiarlo antes de los plugins....=
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.10'
+    }
+}
+
+///hasta acá
+
+plugins {
+
+Recorte 001: viewBinding  colocar lo que hace falta...
+
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+}
+
+apply plugin: 'com.google.gms.google-services'
+//Para generar el enlace con la vista
+android.buildFeatures.viewBinding true
+
+
+
+
+Recorte 002: Librerias de Firebase
+implementation platform('com.google.firebase:firebase-bom:29.0.4')
+implementation 'com.google.firebase:firebase-auth-ktx'
+
+
+Recorte 003: Definición de atributos generales
+
+private lateinit var auth: FirebaseAuth
+private lateinit var binding: ActivityMainBinding
+
+Recorte 004: SetContent
+
+//Se establece el enlace con la vista xml mediante el objeto binding
+binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+
+Recorte 005: Activar la autenticación
+
+//Se inicializa Firebase y se asigna el objeto para autenticación
+FirebaseApp.initializeApp(this)
+auth = Firebase.auth
+
+Recorte 006: se mapean los botones
+
+binding.btRegister.setOnClickListener { haceRegistro() }
+binding.btLogin.setOnClickListener { haceLogin() }
+
+
+Recorte 007: Método haceLogin
+
+ private fun haceLogin() {
+        val email = binding.etCorreo.text.toString()
+        val clave = binding.etClave.text.toString()
+
+        //Se usa la función para crear un usuario por medio de correo y contraseña
+        auth.signInWithEmailAndPassword(email,clave)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    actualiza(user)
+                } else {
+                    Toast.makeText(baseContext,
+                        getString(R.string.msg_fallo_login),
+                        Toast.LENGTH_SHORT).show()
+                    actualiza(null)
+                }
+            }
+    }
+
+
+Recorte 008: haceRegistro
+
+private fun haceRegistro() {
+        val email = binding.etCorreo.text.toString()
+        val clave = binding.etClave.text.toString()
+
+        //Se usa la función para crear un usuario por medio de correo y contraseña
+        auth.createUserWithEmailAndPassword(email,clave)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    actualiza(user)
+                } else {
+                    Toast.makeText(baseContext,
+                        getString(R.string.msg_fallo_registro),
+                        Toast.LENGTH_SHORT).show()
+                    actualiza(null)
+                }
+            }
+    }
+
+Recorte 009: actualiza
+
+ private fun actualiza(user: FirebaseUser?) {
+        if (user!=null) {
+            // paso a la pantalla principal
+            val intent = Intent(this,Principal::class.java)
+            startActivity(intent)
+        }
+    }
+
+
+Recorte 010; onStart()
+
+public override fun onStart() {
+        super.onStart()
+        val user = auth.currentUser
+        actualiza(user)
+    }
+
+
+Recorte 011: exit
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logoff -> {
+                Firebase.auth.signOut()
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
