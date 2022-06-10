@@ -9,7 +9,14 @@
         android:id="@+id/nav_lugar"
         android:name="com.lugares_v.ui.lugar.LugarFragment"
         android:label="@string/menu_lugar"
-        tools:layout="@layout/fragment_lugar" />
+        tools:layout="@layout/fragment_lugar" >
+        <action
+            android:id="@+id/action_nav_lugar_to_addLugarFragment"
+            app:destination="@id/addLugarFragment" />
+        <action
+            android:id="@+id/action_nav_lugar_to_updateLugarFragment"
+            app:destination="@id/updateLugarFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -22,4 +29,25 @@
         android:name="com.lugares_v.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/addLugarFragment"
+        android:name="com.lugares_v.ui.lugar.AddLugarFragment"
+        android:label="@string/bt_addLugar"
+        tools:layout="@layout/fragment_add_lugar" >
+        <action
+            android:id="@+id/action_addLugarFragment_to_nav_lugar"
+            app:destination="@id/nav_lugar" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateLugarFragment"
+        android:name="com.lugares_v.ui.lugar.UpdateLugarFragment"
+        android:label="@string/bt_updateLugar"
+        tools:layout="@layout/fragment_update_lugar" >
+        <action
+            android:id="@+id/action_updateLugarFragment_to_nav_lugar"
+            app:destination="@id/nav_lugar" />
+        <argument
+            android:name="lugar"
+            app:argType="com.lugares_v.model.Lugar" />
+    </fragment>
 </navigation>
