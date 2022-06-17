@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lugares_v">
 
+    <!-- Este es para decirle al android que esta app requiere acceso a hacer llamadas-->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <!-- Estos permisos se requieren para la geolocalzación -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
