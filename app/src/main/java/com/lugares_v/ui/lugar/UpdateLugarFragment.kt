@@ -148,7 +148,7 @@ class UpdateLugarFragment : Fragment() {
             Toast.makeText(requireContext(),getString(R.string.msg_data),Toast.LENGTH_SHORT).show()
         }
     }
-
+//
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
