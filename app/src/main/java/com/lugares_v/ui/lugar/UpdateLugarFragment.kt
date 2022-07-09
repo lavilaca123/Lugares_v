@@ -138,8 +138,7 @@ class UpdateLugarFragment : Fragment() {
         val telefono=binding.etTelefono.text.toString()
         val web=binding.etWeb.text.toString()
         if (nombre.isNotEmpty()) { //Si puedo crear un lugar
-            val lugar= Lugar(args.lugar.id,nombre,correo,telefono,web,0.0,
-                0.0,0.0,"","")
+            val lugar= Lugar(args.lugar.id,nombre,correo,telefono,web,args.lugar.latitud,args.lugar.longitud,args.lugar.altura,"","")
 
             lugarViewModel.updateLugar(lugar)
 
