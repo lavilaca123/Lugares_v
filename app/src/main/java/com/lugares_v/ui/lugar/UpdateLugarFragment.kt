@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.lugares_v.R
 import com.lugares_v.databinding.FragmentUpdateLugarBinding
 import com.lugares_v.model.Lugar
@@ -22,6 +24,8 @@ class UpdateLugarFragment : Fragment() {
 
     //Se deciben los parametros pasados por argumento
     private val args by navArgs<UpdateLugarFragmentArgs>()
+
+    private lateinit var mediaPlayer: MediaPlayer
 
     private var _binding: FragmentUpdateLugarBinding? = null
     private val binding get() = _binding!!
@@ -49,6 +53,22 @@ class UpdateLugarFragment : Fragment() {
         binding.btEmail.setOnClickListener { escribirCorreo() }
         binding.btPhone.setOnClickListener { realizarLlamada() }
         binding.btWeb.setOnClickListener { verWeb() }
+
+        if (args.lugar.rutaAudio?.isNotEmpty() == true) {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(args.lugar.rutaAudio)
+            mediaPlayer.prepare()
+            binding.btPlay.isEnabled=true
+        } else {
+            binding.btPlay.isEnabled=false
+        }
+        if (args.lugar.rutaImagen?.isNotEmpty() == true) {
+            Glide.with(requireContext())
+                .load(args.lugar.rutaImagen)
+                .fitCenter()
+                .into(binding.imagen)
+        }
+        binding.btPlay.setOnClickListener { mediaPlayer.start() }
 
         //Se indica que esta pantalla tiene un menu personalizado...
         setHasOptionsMenu(true)
